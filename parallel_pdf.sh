@@ -2,8 +2,8 @@
 
 # Adapted from Andrew Aklaghi's script here: https://programminghistorian.org/en/lessons/OCR-and-Machine-Translation
 
-DIR=/home/users/bcritt/pdfs/
-FILES=/home/users/bcritt/pdfs/*.pdf
+DIR=/home/users/$USER/pdfs/
+FILES=/home/users/$USER/pdfs/*.pdf
 for f in $FILES;
 do
   	tiff=${f%.*}.tiff
