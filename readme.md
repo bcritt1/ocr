@@ -1,15 +1,24 @@
 # PDF to Text Conversion
 
 This repo provides a shell script for the conversion of pdf files to plain-text for the purposes of higher-level text processing. This implementation utilizes the job array functionality of slurm to process all files in parallel. 
-Parallelization may not be necessary for small corpora. 
+The *large parallel* implementation utilizes slurm stepped arrays for very large corpora that would require more than 1000 steps (the limit for simultaneous jobs on Sherlock). The primary difference is to change the "n" value in the sbatch script to your number of files, to also change it in the "array" option, and to add the step size to this option as well. Basically, you can package n number of scripts to be sent to a single node, thus limiting the individual jobs sent to the scheduler. In the sample *large parallel* sbatch file, I indicated 16 files with steps of 2. So instead of 1 file being sent to one of 16 total nodes, 2 files will be sent to one of 8 total nodes. 
 
 ## File Overview
 
-[parallel_pdf_convert.sh](/scripts/ocr/parallel_pdf_convert.sh) utilizes imagemagick, tesseract, and ghostscript to OCR pdf files. Should also work on tiffs with light tweaking.
+[parallel_pdf_convert.sh](parallel_pdf_convert.sh) utilizes imagemagick, tesseract, and ghostscript to OCR pdf files. Should also work on tiffs with light tweaking.
 
-[parallel_pdf.sbatch](/scripts/ocr/parallel_pdf.sbatch) invokes the shell script and runs as a slurm array. 
+[parallel_pdf.sbatch](parallel_pdf.sbatch) invokes the shell script and runs as a slurm array. 
 
 ## Usage Instructions
+
+### Moving Files
+
+Before logging on to Sherlock, we'll want to get our corpus files in place. To do this we'll use a program called rsync. There are other options and more detail you can check out in our [docs](https://www.sherlock.stanford.edu/docs/storage/data-transfer/). Rsync, among other things, allows us to move files from a local system to a remote system. To use it, we
+```bash
+rsync -Ra /path/to/local/files SUNetID@sherlock.stanford.edu:/corpora/pdfs/
+```
+
+You'll need to change the path to local files (you can enter the terminal at the file location and ```pwd``` for this information) and SUNet ID before running. What the command does is run rsync on the local files we indicate, login to a remote machine with our credentials, and place the files at the location we indicate after the colon.
 
 ### Connecting to Sherlock
 
@@ -21,48 +30,32 @@ in your terminal program of choice.
 
 ### Downloading the Scripts
 
-Once you are logged in, you'll want to have access to the files in this repo, which you can get with a couple simple commands. First, we need to install a program called subversion:
+Now that we're on Sherlock, we can confirm our files made it here safely:
+```bash
+ls ./corpora/pdfs/
 ```
-module load system subversion/1.12.2
+
+will display the files that we transferred. If you don't see anything, there was likely an issue with the transfer.
+
+Next, we need to get the files from this github repo:
+```bash
+git clone https://github.com/bcritt1/ocr.git
 ```
-and use that program to download the files:
-```
-svn export https://github.com/bcritt1/H-S-Documentation/trunk/scripts/ocr/ ocr
-```
+
 This will create a directory in your home space on Sherlock called "ocr" with all the files in this repository.
 
-Next, we need to give the computer permission to run our shell script:
+Because of the way this script is set up, we need to move our scripts into the directory with our pdfs.
+```bash
+mv ./ocr/*pdf.sbatch ./corpora/pdfs/
 ```
-cd ocr/
-chmod +x parallel_pdf_convert.sh
-```
-If you ```ls``` now, you should see that your parallel_pdf_convert.sh file has changed colors, meaning it is now executable.
-
-### Tweaking your Files
-
-Now we just need to tweak two variables in the shell script to reflect your environment. 
-```
-nano parallel_pdf_convert.sh
-```
-and change the FILES and DIR variables to reflect the location of your PDFs on Sherlock. For more on transferring your data to Sherlock, see 
-[https://www.sherlock.stanford.edu/docs/storage/data-transfer/](https://www.sherlock.stanford.edu/docs/storage/data-transfer/).
-
-Another tweak in the .sbatch file and we will be good to go. 
-```
-nano pdf_convert.sbatch
-```
-Here you need to make one of the following changes depending on whether you want to run in parallel:If you don't want to run in parallel, you can simply remove the array line in the slurm instructions. If running as an array, the range 
-in this line should be adjusted to 1-n, where n is the number of files in your input directory. 
-
-I've configured the jobs for 16GB memory which worked for my small test corpus: this process should be
-relatively steady in memory usage, but if you're getting a memory error, this can be increased. Wall time is set at the default of 2 hours, but a line with eg. #SBATCH time=04:00:00 for 4 hours could be added to change this. For 
-reference, two pdfs of about 15 pages each only took about 1.5 minutes total.
-
-Finally, you'll need to change places with <USERNAME> to your username on Sherlock. 
 
 ### Running the Script
 
-We should be ready.
+We should be ready. Move into the pdf folder
+```bash
+cd corpora/pdfs
+```
+and
 ```
 sbatch pdf_convert.sbatch
 ```
