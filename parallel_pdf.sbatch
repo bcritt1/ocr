@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=myarrayjob
-#SBATCH --output=/home/users/%u/out/myarrayjob.%j.out
-#SBATCH --error=/home/users/%u/err/myarrayjob.%j.err
+#SBATCH --output=/home/%u/out/myarrayjob.%j.out
+#SBATCH --error=/home/%u/err/myarrayjob.%j.err
 #SBATCH -p normal
 #SBATCH --ntasks=1
 #SBATCH --mem=16GB
