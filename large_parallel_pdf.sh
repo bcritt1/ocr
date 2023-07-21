@@ -1,7 +1,7 @@
 #!/bin/bash
 
-DIR=/home/users/$USER/corpora/pdfTest/
-FILES=/home/users/$USER/corpora/pdfTest/*.pdf
+DIR=/farmshare/learning/data/pdfs/
+FILES=/farmshare/learning/data/pdfs/*.pdf
 for f in $FILES;
 do
   	tiff=${f%.*}.tiff
