@@ -11,15 +11,6 @@ The *large parallel* implementation utilizes slurm stepped arrays for very large
 
 ## Usage Instructions
 
-### Moving Files
-
-Before logging on to Farmshare, we'll want to get our corpus files in place. To do this we'll use a program called rsync. There are other options and more detail you can check out in our [docs](https://www.sherlock.stanford.edu/docs/storage/data-transfer/). Rsync, among other things, allows us to move files from a local system to a remote system. To use it, we
-```bash
-rsync -Ra /path/to/local/files SUNetID@rice.stanford.edu:/farmshare/learning/data/pdfs/
-```
-
-You'll need to change the path to local files (you can enter the terminal at the file location and ```pwd``` for this information) and SUNet ID before running. What the command does is run rsync on the local files we indicate, login to a remote machine with our credentials, and place the files at the location we indicate after the colon.
-
 ### Connecting to Farmshare
 
 To connect to Farmshare
@@ -30,32 +21,16 @@ in your terminal program of choice.
 
 ### Downloading the Scripts
 
-Now that we're on Farmshare, we can confirm our files made it here safely:
+Now that we're on Farmshare, let's move to the learning environment for this lesson:
 ```bash
-ls /farmshare/learning/data/pdfs/
+ls /farmshare/learning/scripts/scripts/ocr
 ```
-
-will display the files that we transferred. If you don't see anything, there was likely an issue with the transfer.
-
-Next, we need to get the files from this github repo:
-```bash
-git clone https://github.com/bcritt1/ocr.git
-```
-
-This will create a directory in your home space on Farmshare called "ocr" with all the files in this repository.
-
-Because of the way this script is set up, we need to move our scripts into the directory with our pdfs.
-```bash
-mv ./ocr/* /farmshare/learning/scripts/scripts/
-```
+You can check out the files with ```ls```.
 
 ### Running the Script
 
-We should be ready. Move into the pdf folder
-```bash
-cd /farmshare/learning/scripts/scripts/ocr/
-```
-and
+We should be ready. 
+
 ```
 sbatch parallel_pdf.sbatch
 ```
