@@ -46,18 +46,18 @@ This will create a directory in your home space on Farmshare called "ocr" with a
 
 Because of the way this script is set up, we need to move our scripts into the directory with our pdfs.
 ```bash
-mv ./ocr/* /farmshare/learning/scripts/
+mv ./ocr/* /farmshare/learning/scripts/scripts/
 ```
 
 ### Running the Script
 
 We should be ready. Move into the pdf folder
 ```bash
-cd /farmshare/learning/scripts/ocr/
+cd /farmshare/learning/scripts/scripts/ocr/
 ```
 and
 ```
-sbatch pdf_convert.sbatch
+sbatch parallel_pdf.sbatch
 ```
 to run the shell script. The script will take your pdfs, convert them to .tiff files, then convert those .tiff files to plain text. It will create /tiff and /ocr directories inside the directory with your pdfs and send the .tiff and 
 .txt files there respectively. You may or may not need the .tiff files, but the .txt files can be used as inputs for just about any of the text processing sub-repos you find here. 
