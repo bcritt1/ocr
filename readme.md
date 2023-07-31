@@ -57,7 +57,7 @@ cd corpora/pdfs
 ```
 and
 ```
-sbatch pdf_convert.sbatch
+sbatch parallel_pdf.sbatch
 ```
 to run the shell script. The script will take your pdfs, convert them to .tiff files, then convert those .tiff files to plain text. It will create /tiff and /ocr directories inside the directory with your pdfs and send the .tiff and 
 .txt files there respectively. You may or may not need the .tiff files, but the .txt files can be used as inputs for just about any of the text processing sub-repos you find here. 
