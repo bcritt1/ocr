@@ -6,9 +6,8 @@
 #SBATCH --array=0-16:2
 #SBATCH -n 16
 
-ml load system imagemagick/7.0.7-2
-ml load system tesseract/5.1.0
-ml load system ghostscript/9.53.2
+ml imagemagick
+ml tesseract
 file=$(ls /farmshare/learning/data/pdfs/*.pdf | sed -n ${SLURM_ARRAY_TASK_ID}p)
 
 for i in {0..2}; do

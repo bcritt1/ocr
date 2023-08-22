@@ -2,6 +2,7 @@
 
 DIR=/farmshare/learning/data/pdfs/
 FILES=/farmshare/learning/data/pdfs/*.pdf
+OUT=/scratch/users/$USER/outputs/ocr/
 for f in $FILES;
 do
   	tiff=${f%.*}.tiff
@@ -10,7 +11,7 @@ do
         tesseract $tiff $ocr
 done
 
-mkdir $DIR"/ocr"
-mkdir $DIR"/tiff"
-mv $DIR/*_ocr.txt $DIR/ocr
-mv $DIR/*.tiff $DIR/tiff
+mkdir -p $OUT"/ocr"
+mkdir -p $OUT"/tiff"
+mv $DIR/*_ocr.txt $OUT/ocr
+mv $DIR/*.tiff $OUT/tiff
