@@ -12,8 +12,8 @@ do
         ocr=${f%.*}_ocr
         tesseract $tiff $ocr
 done
-
-mkdir -p $OUT"/ocr"
-mkdir -p $OUT"/tiff"
-mv $DIR/*_ocr.txt $OUT/ocr
-mv $DIR/*.tiff $OUT/tiff
+randnum="$RANDOM"
+mkdir $DIR/"${randnum}_ocr"
+mkdir $DIR/"${randnum}_tiff"
+mv $DIR/*_ocr.txt $DIR/${randnum}"_ocr"
+mv $DIR/*.tiff $DIR/${randnum}"_tiff"
